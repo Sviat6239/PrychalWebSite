@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Соц-мережі</h2>
+<div class="social-media-buttons text-center mb-4">
+    <button class="btn btn-primary" onclick="loadContent('youtube')">YouTube</button>
+    <button class="btn btn-primary" onclick="loadContent('facebook')">Facebook</button>
+    <button class="btn btn-primary" onclick="loadContent('instagram_main')">Instagram Main</button>
+    <button class="btn btn-primary" onclick="loadContent('instagram_teens')">Instagram Teens</button>
+</div>
+
+<div id="social-media-link" class="text-center mb-4">
+    <!-- Social media link button will be dynamically loaded here -->
+</div>
+
+<div id="social-media-content" class="text-center mb-4">
+    <!-- Social media posts buttons will be dynamically loaded here -->
+</div>
+
+<script>
+    let currentPlatform = '';
+
+    async function loadContent(platform) {
+        if (currentPlatform === platform) return;
+        currentPlatform = platform;
+
+        const platformUrls = {
+            'youtube': 'https://www.youtube.com/@baptistgdynia2356/videos',
+            'facebook': 'https://www.facebook.com/people/%D0%A6%D0%B5%D1%80%D0%BA%D0%BE%D0%B2%D1%8C-%D0%95%D0%A5%D0%91-%D0%B2-%D0%93%D0%B4%D1%8B%D0%BD%D0%B5/100081609697498/',
+            'instagram_main': 'https://www.instagram.com/prichalgdynia/',
+            'instagram_teens': 'https://www.instagram.com/gp_teens/'
+        };
+
+        try {
+            const response = await fetch(`/socialmedia/${platform}/`);
+            const data = await response.json();
+            const contentDiv = document.getElementById('social-media-content');
+            const linkDiv = document.getElementById('social-media-link');
+            contentDiv.innerHTML = '';
+            linkDiv.innerHTML = '';
+
+            // Add social media link button
+            const linkButton = document.createElement('a');
+            linkButton.href = platformUrls[platform];
+            linkButton.target = '_blank';
+            linkButton.className = 'btn btn-secondary mb-3';
+            linkButton.textContent = `Перейти на ${platform}`;
+            linkDiv.appendChild(linkButton);
+
+            // Add last 6 posts as buttons
+            data.slice(0, 6).forEach(post => {
+                const postButton = document.createElement('a');
+                postButton.href = post.url;
+                postButton.target = '_blank';
+                postButton.className = 'btn btn-outline-primary d-block mb-2';
+                postButton.textContent = post.caption || 'Без описания';
+                contentDiv.appendChild(postButton);
+            });
+        } catch (error) {
+            console.error('Ошибка загрузки данных:', error);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadContent('youtube');
+    });
+</script>
+{% endblock %}
