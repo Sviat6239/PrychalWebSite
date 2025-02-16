@@ -43,12 +43,14 @@
 
         .navbar {
             background-color: var(--accent2) !important;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .btn-theme {
             background-color: var(--accent1);
             border: none;
             color: var(--text-color);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         a, .nav-link, .navbar-brand {
@@ -61,24 +63,28 @@
             padding: 20px;
             border-radius: 10px;
             flex: 1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .footer {
             background-color: var(--accent1) !important;
             color: var(--text-color) !important;
             margin-top: auto;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .jumbotron {
             background-color: var(--jumbotron-bg) !important;
             color: var(--text-color) !important;
             transition: background-color 0.3s, color 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .btn-primary, .btn-secondary, .btn-outline-primary {
             background-color: var(--button-bg) !important;
             color: var(--button-text) !important;
             border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .btn-primary:hover, .btn-secondary:hover, .btn-outline-primary:hover {
@@ -89,18 +95,72 @@
         .navbar-toggler-icon {
             background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='var(--toggler-icon-bg)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
         }
+
+        .animated-button {
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s, transform 0.3s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .animated-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background-color: rgba(255, 255, 255, 0.15);
+            transform: translate(-50%, -50%) rotate(45deg);
+            transition: width 0.3s, height 0.3s;
+        }
+
+        .animated-button:hover::before {
+            width: 0;
+            height: 0;
+        }
+
+        .animated-button:hover {
+            background-color: var(--button-bg);
+            transform: scale(1.05);
+        }
+
+        .animated-button.hovered {
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .flash-message {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #397768;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .flash-message.show {
+            display: block;
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
-        <a class="navbar-brand" href="/static">Церква Причал</a>
+        <a class="navbar-brand" href="/">Церква Причал</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item active">
-                    <a class="nav-link" href="/static">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/about/">About</a>
@@ -116,6 +176,8 @@
         </div>
     </nav>
     <div class="container mt-5">
+        <button class="btn btn-primary mb-3 animated-button" data-text="Click me" data-copy="Click me">Click me</button>
+        <div id="flash-message" class="flash-message"></div>
         {% block content %}{% endblock %}
     </div>
     <footer class="footer text-center py-3">
@@ -153,6 +215,43 @@
             const savedTheme = localStorage.getItem('theme') || 'light';
             setTheme(savedTheme);
         });
+
+        document.querySelectorAll('.animated-button').forEach(button => {
+            button.addEventListener('click', () => {
+                if (button.dataset.copy) {
+                    copyToClipboard(button.dataset.copy);
+                    button.textContent = 'Скопійовано!';
+                    setTimeout(() => {
+                        button.textContent = button.dataset.text;
+                    }, 2000);
+                }
+            });
+
+            button.addEventListener('mouseover', () => {
+                button.classList.add('hovered');
+            });
+
+            button.addEventListener('mouseout', () => {
+                button.classList.remove('hovered');
+            });
+        });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                showFlashMessage('Скопійовано: ' + text);
+            }, function(err) {
+                console.error('Помилка копіювання: ', err);
+            });
+        }
+
+        function showFlashMessage(message) {
+            const flashMessageDiv = document.getElementById('flash-message');
+            flashMessageDiv.textContent = message;
+            flashMessageDiv.classList.add('show');
+            setTimeout(() => {
+                flashMessageDiv.classList.remove('show');
+            }, 3000);
+        }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
