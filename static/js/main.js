@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
         button.addEventListener('click', () => {
             if (button.dataset.copy) {
                 copyToClipboard(button.dataset.copy);
-                button.textContent = 'Скопійовано!';
+                button.textContent = 'Copied!';
                 setTimeout(() => {
                     button.textContent = button.dataset.text;
                 }, 2000);
@@ -48,9 +48,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function copyToClipboard(text) {
         navigator.clipboard.writeText(text).then(function() {
-            showFlashMessage('Скопійовано: ' + text);
+            showFlashMessage('Copied: ' + text);
         }, function(err) {
-            console.error('Помилка копіювання: ', err);
+            console.error('Copy error: ', err);
         });
     }
 
@@ -94,5 +94,92 @@ document.addEventListener("DOMContentLoaded", function() {
 
     fadeInElements.forEach(element => {
         observer.observe(element);
+    });
+
+    // Smooth scroll to top button
+    const backToTopButton = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopButton.classList.add('show');
+        } else {
+            backToTopButton.classList.remove('show');
+        }
+    });
+
+    backToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    // Modal popups
+    const modalTriggers = document.querySelectorAll('[data-modal]');
+    const modalCloseButtons = document.querySelectorAll('.modal-close');
+
+    modalTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function() {
+            const modal = document.querySelector(this.dataset.modal);
+            modal.classList.add('is-active');
+        });
+    });
+
+    modalCloseButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            this.closest('.modal').classList.remove('is-active');
+        });
+    });
+
+    // Tooltips
+    const tooltipElements = document.querySelectorAll('[data-tooltip]');
+    tooltipElements.forEach(element => {
+        element.addEventListener('mouseover', function() {
+            const tooltip = document.createElement('div');
+            tooltip.className = 'tooltip';
+            tooltip.textContent = this.dataset.tooltip;
+            document.body.appendChild(tooltip);
+            const rect = this.getBoundingClientRect();
+            tooltip.style.left = `${rect.left + window.scrollX + rect.width / 2 - tooltip.offsetWidth / 2}px`;
+            tooltip.style.top = `${rect.top + window.scrollY - tooltip.offsetHeight - 10}px`;
+        });
+
+        element.addEventListener('mouseout', function() {
+            document.querySelector('.tooltip').remove();
+        });
+    });
+
+    // Image carousel
+    const carousels = document.querySelectorAll('.carousel');
+    carousels.forEach(carousel => {
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        let currentIndex = 0;
+
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.style.display = i === index ? 'block' : 'none';
+            });
+        }
+
+        carousel.querySelector('.carousel-next').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % slides.length;
+            showSlide(currentIndex);
+        });
+
+        carousel.querySelector('.carousel-prev').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            showSlide(currentIndex);
+        });
+
+        showSlide(currentIndex);
     });
 });
