@@ -1,68 +1,39 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<h2>Соц-мережі</h2>
-<div class="social-media-buttons text-center mb-4">
-    <button class="btn btn-primary" onclick="loadContent('youtube')">YouTube</button>
-    <button class="btn btn-primary" onclick="loadContent('facebook')">Facebook</button>
-    <button class="btn btn-primary" onclick="loadContent('instagram_main')">Instagram Main</button>
-    <button class="btn btn-primary" onclick="loadContent('instagram_teens')">Instagram Teens</button>
+<div class="container mt-5">
+    <h2>Latest Social Media Posts</h2>
+    <div class="btn-group mb-3" role="group" aria-label="Platform filter">
+        <a href="?platform=All" class="btn btn-primary {% if selected_platform == 'All' %}active{% endif %}">All</a>
+        <a href="?platform=Instagram" class="btn btn-primary {% if selected_platform == 'Instagram' %}active{% endif %}">Instagram</a>
+        <a href="?platform=Facebook" class="btn btn-primary {% if selected_platform == 'Facebook' %}active{% endif %}">Facebook</a>
+        <a href="?platform=YouTube" class="btn btn-primary {% if selected_platform == 'YouTube' %}active{% endif %}">YouTube</a>
+    </div>
+    {% for platform, posts in categorized_posts.items %}
+    {% endfor %}
+        {% if posts %}
+            <h3>{{ platform }}</h3>
+            <div class="row">
+                {% for post in posts %}
+                <div class="col-md-4">
+                    <div class="card mb-4">
+                        {% if post.preview_image %}
+                        <img src="{{ post.preview_image }}" class="card-img-top" alt="Preview Image">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{ post.title }}</h5>
+                            <p class="card-text">{{ post.description }}</p>
+                            <p class="card-text"><small class="text-muted">{{ post.social_created_at }}</small></p>
+                            <a href="{{ post.platform_url }}" class="btn btn-primary" target="_blank">Go to {{ post.platform }}</a>
+                            <form action="{% url 'delete_post' post.id %}" method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% endif %}
 </div>
-
-<div id="social-media-link" class="text-center mb-4">
-    <!-- Social media link button will be dynamically loaded here -->
-</div>
-
-<div id="social-media-content" class="text-center mb-4">
-    <!-- Social media posts buttons will be dynamically loaded here -->
-</div>
-
-<script>
-    let currentPlatform = '';
-
-    async function loadContent(platform) {
-        if (currentPlatform === platform) return;
-        currentPlatform = platform;
-
-        const platformUrls = {
-            'youtube': 'https://www.youtube.com/@baptistgdynia2356/videos',
-            'facebook': 'https://www.facebook.com/people/%D0%A6%D0%B5%D1%80%D0%BA%D0%BE%D0%B2%D1%8C-%D0%95%D0%A5%D0%91-%D0%B2-%D0%93%D0%B4%D1%8B%D0%BD%D0%B5/100081609697498/',
-            'instagram_main': 'https://www.instagram.com/prichalgdynia/',
-            'instagram_teens': 'https://www.instagram.com/gp_teens/'
-        };
-
-        try {
-            const response = await fetch(`/socialmedia/${platform}/`);
-            const data = await response.json();
-            const contentDiv = document.getElementById('social-media-content');
-            const linkDiv = document.getElementById('social-media-link');
-            contentDiv.innerHTML = '';
-            linkDiv.innerHTML = '';
-
-            // Add social media link button
-            const linkButton = document.createElement('a');
-            linkButton.href = platformUrls[platform];
-            linkButton.target = '_blank';
-            linkButton.className = 'btn btn-secondary mb-3';
-            linkButton.textContent = `Перейти на ${platform}`;
-            linkDiv.appendChild(linkButton);
-
-            // Add last 6 posts as buttons
-            data.slice(0, 6).forEach(post => {
-                const postButton = document.createElement('a');
-                postButton.href = post.url;
-                postButton.target = '_blank';
-                postButton.className = 'btn btn-outline-primary d-block mb-2';
-                postButton.textContent = post.caption || 'Без описания';
-                contentDiv.appendChild(postButton);
-            });
-        } catch (error) {
-            console.error('Ошибка загрузки данных:', error);
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-        loadContent('youtube');
-    });
-</script>
 {% endblock %}
