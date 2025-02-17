@@ -1,17 +1,7 @@
+<!-- Contacts/templates/about.html -->
 {% extends "base.html" %}
 
 {% block content %}
-<style>
-    .fade-in {
-        opacity: 0;
-        transition: opacity 2s;
-    }
-
-    .fade-in.visible {
-        opacity: 1;
-    }
-</style>
-
 <section class="about-section py-5 fade-in">
     <div class="container">
         <h2 class="display-4 text-center mb-4">Про нас</h2>
@@ -42,13 +32,4 @@
         </div>
     </div>
 </section>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const fadeInElements = document.querySelectorAll('.fade-in');
-        fadeInElements.forEach(element => {
-            element.classList.add('visible');
-        });
-    });
-</script>
 {% endblock %}

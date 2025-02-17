@@ -162,3 +162,67 @@ a, .nav-link, .navbar-brand {
 .fade-in.visible {
     opacity: 1;
 }
+
+/* Extracted from contacts.html */
+.animated-button {
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.animated-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translate(-50%, -50%) rotate(45deg);
+    transition: width 0.3s, height 0.3s;
+}
+
+.animated-button:hover::before {
+    width: 0;
+    height: 0;
+}
+
+.animated-button:hover {
+    background-color: var(--button-bg);
+    transform: scale(1.05);
+}
+
+.animated-button.hovered {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.flash-message {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #397768;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: none;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+}
+
+.flash-message.show {
+    display: block;
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Extracted from about.html */
+.fade-in {
+    opacity: 0;
+    transition: opacity 2s;
+}
+
+.fade-in.visible {
+    opacity: 1;
+}
