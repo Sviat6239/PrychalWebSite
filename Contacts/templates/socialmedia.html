@@ -4,13 +4,12 @@
 <div class="container mt-5">
     <h2>Latest Social Media Posts</h2>
     <div class="btn-group mb-3" role="group" aria-label="Platform filter">
-        <a href="?platform=All" class="btn btn-primary {% if selected_platform == 'All' %}active{% endif %}">All</a>
-        <a href="?platform=Instagram" class="btn btn-primary {% if selected_platform == 'Instagram' %}active{% endif %}">Instagram</a>
-        <a href="?platform=Facebook" class="btn btn-primary {% if selected_platform == 'Facebook' %}active{% endif %}">Facebook</a>
-        <a href="?platform=YouTube" class="btn btn-primary {% if selected_platform == 'YouTube' %}active{% endif %}">YouTube</a>
+        <a href="?platform=All" class="btn btn-primary filter-btn {% if selected_platform == 'All' %}active{% endif %}">All</a>
+        <a href="?platform=Instagram" class="btn btn-primary filter-btn {% if selected_platform == 'Instagram' %}active{% endif %}">Instagram</a>
+        <a href="?platform=Facebook" class="btn btn-primary filter-btn {% if selected_platform == 'Facebook' %}active{% endif %}">Facebook</a>
+        <a href="?platform=YouTube" class="btn btn-primary filter-btn {% if selected_platform == 'YouTube' %}active{% endif %}">YouTube</a>
     </div>
     {% for platform, posts in categorized_posts.items %}
-    {% endfor %}
         {% if posts %}
             <h3>{{ platform }}</h3>
             <div class="row">
@@ -25,15 +24,15 @@
                             <p class="card-text">{{ post.description }}</p>
                             <p class="card-text"><small class="text-muted">{{ post.social_created_at }}</small></p>
                             <a href="{{ post.platform_url }}" class="btn btn-primary" target="_blank">Go to {{ post.platform }}</a>
-                            <form action="{% url 'delete_post' post.id %}" method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>
                         </div>
                     </div>
                 </div>
                 {% endfor %}
             </div>
+            <div class="text-center mb-4">
+                <a href="https://www.{{ platform|lower }}.com" class="btn btn-secondary platform-btn" target="_blank">Visit {{ platform }}</a>
+            </div>
         {% endif %}
+    {% endfor %}
 </div>
 {% endblock %}

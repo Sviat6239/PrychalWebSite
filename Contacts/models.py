@@ -2,21 +2,35 @@ from django.db import models
 from django.contrib.auth.models import User
 import requests
 from bs4 import BeautifulSoup
+from urllib.parse import urlparse
 
 class SocialMediaPost(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    platform = models.CharField(max_length=50)
+    platform = models.CharField(max_length=50, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     platform_url = models.URLField(default='https://example.com')
-    title = models.CharField(max_length=255, blank=True)
+    title = models.CharField(max_length=300, blank=True)
     description = models.TextField(blank=True)
     preview_image = models.URLField(blank=True)
     social_created_at = models.DateTimeField(blank=True, null=True)
 
     def save(self, *args, **kwargs):
+        if not self.platform:
+            self.platform = self.detect_platform()
         if not self.title or not self.description or not self.preview_image or not self.social_created_at:
             self.fetch_post_details()
         super().save(*args, **kwargs)
+
+    def detect_platform(self):
+        netloc = urlparse(self.platform_url).netloc
+        if 'instagram' in netloc:
+            return 'Instagram'
+        elif 'facebook' in netloc:
+            return 'Facebook'
+        elif 'youtube' in netloc:
+            return 'YouTube'
+        else:
+            return 'Unknown'
 
     def fetch_post_details(self):
         response = requests.get(self.platform_url)
