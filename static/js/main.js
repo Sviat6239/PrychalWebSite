@@ -62,45 +62,16 @@ document.addEventListener("DOMContentLoaded", function() {
             flashMessageDiv.classList.remove('show');
         }, 3000);
     }
-});
 
-// Smooth scrolling for anchor links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
-        });
-    });
-});
-
-// Back-to-top button functionality
-const backToTopButton = document.createElement('button');
-backToTopButton.id = 'back-to-top';
-backToTopButton.textContent = '↑';
-document.body.appendChild(backToTopButton);
-
-window.addEventListener('scroll', () => {
-    if (window.scrollY > 300) {
-        backToTopButton.classList.add('show');
-    } else {
-        backToTopButton.classList.remove('show');
-    }
-});
-
-backToTopButton.addEventListener('click', () => {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function() {
     const textBlocks = document.querySelectorAll('.text-block');
 
     textBlocks.forEach(block => {
         block.addEventListener('click', () => {
-            block.classList.toggle('full-content');
+            const isFullContent = block.classList.contains('full-content');
+            textBlocks.forEach(b => b.classList.remove('full-content'));
+            if (!isFullContent) {
+                block.classList.add('full-content');
+            }
         });
     });
 
@@ -110,5 +81,18 @@ document.addEventListener("DOMContentLoaded", function() {
                 block.classList.remove('full-content');
             });
         }
+    });
+
+    // Add animation on scroll
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, { threshold: 0.1 });
+
+    fadeInElements.forEach(element => {
+        observer.observe(element);
     });
 });
