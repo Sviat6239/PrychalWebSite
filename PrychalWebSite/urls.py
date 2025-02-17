@@ -24,6 +24,6 @@ urlpatterns = [
     path('about/', views.about),
     path('contacts/', views.contacts),
     path('socialmedia/', views.socialmedia),
-
+    path('socialmedia/<str:platform>/', views.socialmedia_data, name='socialmedia_data'),
 
 ]

@@ -3,7 +3,6 @@ from django.http import JsonResponse
 import requests
 from bs4 import BeautifulSoup
 import threading
-import time
 
 posts_data = {}
 
@@ -25,69 +24,50 @@ SELECTORS = {
     'facebook': 'div[data-ad-preview="message"]'
 }
 
-
 def fetch_latest_posts(url, selector):
     try:
         response = requests.get(url, headers=HEADERS, timeout=10)
         response.raise_for_status()
-
-        # Check if the response is from Facebook, indicating a potential issue
-        if "facebook.com" in url and response.status_code == 400:
-            print(f"🚨 Bad Request for Facebook URL: {url}. Consider using the Facebook Graph API.")
-            return []
-
         soup = BeautifulSoup(response.text, "html.parser")
         elements = soup.select(selector)[:6]
 
         posts = []
         for element in elements:
-            try:
-                post_data = {
-                    'url': element.get('href', ''),
-                    'thumbnail': element.find('img')['src'] if element.find('img') else '',
-                    'caption': element.get_text(strip=True) or 'No description'
-                }
-                posts.append(post_data)
-            except Exception as e:
-                print(f"⚠ Error processing post: {e}")
+            post_data = {
+                'url': element.get('href', ''),
+                'thumbnail': element.find('img')['src'] if element.find('img') else '',
+                'caption': element.get_text(strip=True) or 'No description'
+            }
+            posts.append(post_data)
 
         return posts
 
     except requests.RequestException as e:
-        print(f"🚨 Request error {url}: {e}")
+        print(f"Request error {url}: {e}")
         return []
-
 
 def update_posts():
     global posts_data
-
     for platform, url in URLS.items():
         new_posts = fetch_latest_posts(url, SELECTORS.get(platform, ''))
         if new_posts:
             posts_data[platform] = new_posts[-6:]
-
     threading.Timer(300, update_posts).start()
 
-
 update_posts()
-
 
 def socialmedia_data(request, platform):
     data = posts_data.get(platform, [])
     return JsonResponse(data, safe=False)
 
+def socialmedia(request):
+    return render(request, 'socialmedia.html')
 
 def index(request):
     return render(request, 'index.html')
 
-
-def about(request):
-    return render(request, 'about.html')
-
-
 def contacts(request):
     return render(request, 'contacts.html')
 
-
-def socialmedia(request):
-    return render(request, 'socialmedia.html')
+def about(request):
+    return render(request, 'about.html')
