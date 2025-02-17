@@ -56,19 +56,21 @@ a, .nav-link, .navbar-brand {
 }
 
 .container {
+    flex: 1;
     background-color: var(--bg-color) !important;
     color: var(--text-color) !important;
     padding: 20px;
     border-radius: 10px;
-    flex: 1;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .footer {
     background-color: var(--accent1) !important;
     color: var(--text-color) !important;
-    margin-top: auto;
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: auto;
+    padding: 10px 0;
+    text-align: center;
 }
 
 .jumbotron {
@@ -298,3 +300,69 @@ html {
     transform: scale(1.05);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
+
+form input[type="text"],
+form input[type="password"] {
+    border: 2px solid #007bff;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 15px;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus {
+    border-color: #0056b3;
+    box-shadow: 0 0 10px rgba(0, 86, 179, 0.5);
+}
+
+.card-header {
+    background-color: var(--accent1);
+    color: var(--text-color);
+    border-bottom: 2px solid #007bff;
+}
+
+.card-body {
+    background-color: var(--jumbotron-bg);
+    color: var(--text-color);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: var(--button-bg);
+    opacity: 0.8;
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.animated-button {
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.animated-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translate(-50%, -50%) rotate(45deg);
+    transition: width 0.3s, height 0.3s;
+}
+
