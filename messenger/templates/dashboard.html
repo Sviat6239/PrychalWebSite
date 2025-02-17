@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Dashboard</title>
 </head>
 <body>
-
+    {% if user.is_authenticated %}
+        <h1>Welcome to your Dashboard, {{ user.first_name }}!</h1>
+        <!-- Add dashboard content here -->
+    {% else %}
+        <p>You need to <a href="{% url 'login' %}">login</a> to access the dashboard.</p>
+    {% endif %}
 </body>
 </html>
