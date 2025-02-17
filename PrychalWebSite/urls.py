@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from Contacts import views
-from messenger.views import CustomLoginView, CustomLogoutView
+from messenger.views import CustomLoginView, CustomLogoutView, dashboard_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +28,5 @@ urlpatterns = [
     path('delete_post/<int:post_id>/', views.delete_post, name='delete_post'),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
+    path('dashboard/', dashboard_view, name='dashboard'),
 ]
