@@ -366,3 +366,11 @@ form input[type="password"]:focus {
     transition: width 0.3s, height 0.3s;
 }
 
+.filter-btn, .platform-btn {
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.filter-btn:hover, .platform-btn:hover {
+    transform: scale(1.1);
+    background-color: #0056b3;
+}

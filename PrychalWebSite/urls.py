@@ -25,6 +25,7 @@ urlpatterns = [
     path('about/', views.about),
     path('contacts/', views.contacts),
     path('socialmedia/', views.socialmedia, name='socialmedia'),
+    path('delete_post/<int:post_id>/', views.delete_post, name='delete_post'),
     path('login/', CustomLoginView.as_view(), name='login'),
     path('logout/', CustomLogoutView.as_view(), name='logout'),
 ]
