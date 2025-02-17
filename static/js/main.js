@@ -63,3 +63,52 @@ document.addEventListener("DOMContentLoaded", function() {
         }, 3000);
     }
 });
+
+// Smooth scrolling for anchor links
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+});
+
+// Back-to-top button functionality
+const backToTopButton = document.createElement('button');
+backToTopButton.id = 'back-to-top';
+backToTopButton.textContent = '↑';
+document.body.appendChild(backToTopButton);
+
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTopButton.classList.add('show');
+    } else {
+        backToTopButton.classList.remove('show');
+    }
+});
+
+backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    const textBlocks = document.querySelectorAll('.text-block');
+
+    textBlocks.forEach(block => {
+        block.addEventListener('click', () => {
+            block.classList.toggle('full-content');
+        });
+    });
+
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.text-block.full-content')) {
+            textBlocks.forEach(block => {
+                block.classList.remove('full-content');
+            });
+        }
+    });
+});
