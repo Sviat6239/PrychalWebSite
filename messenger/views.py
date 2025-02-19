@@ -14,6 +14,9 @@ class CustomLogoutView(LogoutView):
 def dashboard_view(request):
     return render(request, 'dashboard.html')
 
+def messenger_view(request):
+    return render(request, 'messenger/messenger.html')
+
 @login_required
 def create_chat(request):
     if request.method == 'POST':
