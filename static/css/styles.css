@@ -20,7 +20,8 @@
     --toggler-icon-bg: #f5f5dd;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     display: flex;
@@ -51,7 +52,9 @@ body {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
-a, .nav-link, .navbar-brand {
+a,
+.nav-link,
+.navbar-brand {
     color: var(--text-color) !important;
 }
 
@@ -80,7 +83,9 @@ a, .nav-link, .navbar-brand {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.btn-primary, .btn-secondary, .btn-outline-primary {
+.btn-primary,
+.btn-secondary,
+.btn-outline-primary {
     background-color: var(--button-bg) !important;
     color: var(--button-text) !important;
     border: none;
@@ -88,7 +93,9 @@ a, .nav-link, .navbar-brand {
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.btn-primary:hover, .btn-secondary:hover, .btn-outline-primary:hover {
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-outline-primary:hover {
     background-color: var(--button-bg) !important;
     opacity: 0.8;
     transform: scale(1.05);
@@ -196,7 +203,8 @@ html {
     transform: scale(1.1);
 }
 
-.text-block, .value-item {
+.text-block,
+.value-item {
     position: relative;
     overflow: hidden;
     transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;
@@ -209,7 +217,8 @@ html {
     border-radius: 10px;
 }
 
-.text-block:hover, .value-item:hover {
+.text-block:hover,
+.value-item:hover {
     transform: scale(1.05) translateY(-10px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     background-color: var(--accent2);
@@ -231,12 +240,14 @@ html {
     transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s, color 0.3s;
 }
 
-.dark-mode .text-block, .dark-mode .value-item {
+.dark-mode .text-block,
+.dark-mode .value-item {
     background-color: var(--accent2);
     color: var(--text-color);
 }
 
-.dark-mode .text-block:hover, .dark-mode .value-item:hover {
+.dark-mode .text-block:hover,
+.dark-mode .value-item:hover {
     background-color: var(--accent1);
     transform: scale(1.05) translateY(-10px);
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -254,6 +265,7 @@ html {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -366,11 +378,13 @@ form input[type="password"]:focus {
     transition: width 0.3s, height 0.3s;
 }
 
-.filter-btn, .platform-btn {
+.filter-btn,
+.platform-btn {
     transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
-.filter-btn:hover, .platform-btn:hover {
+.filter-btn:hover,
+.platform-btn:hover {
     transform: scale(1.1);
     background-color: #0056b3;
 }
@@ -428,4 +442,11 @@ form input[type="password"]:focus {
 .socialmedia-platform-btn:hover {
     transform: scale(1.1);
     background-color: #0056b3;
+}
+
+.highlight-border {
+    border: 2px solid #ff5733;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
