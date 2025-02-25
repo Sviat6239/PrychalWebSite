@@ -1,20 +1,24 @@
+from django.contrib.auth.models import AbstractUser, Group, Permission
 from django.db import models
 
-class User(models.Model):
+class User(AbstractUser):
     first_name = models.CharField(max_length=100)
     second_name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100, unique=True)
-    password = models.CharField(max_length=100)
     phone = models.CharField(max_length=100, unique=True)
     date_of_birth = models.DateField()
     biography = models.TextField(max_length=5000)
+
+    username = models.CharField(max_length=150, unique=True, default='default_username')
+
+    groups = models.ManyToManyField(Group, related_name='messenger_user_groups')
+    user_permissions = models.ManyToManyField(Permission, related_name='messenger_user_permissions')
 
     def __str__(self):
         return self.first_name
 
     @property
     def available_chats(self):
-        """Return all chats where the user participates."""
         return self.chats.all()
 
 class Chat(models.Model):
